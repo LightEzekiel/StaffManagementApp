@@ -152,7 +152,6 @@ public class HighSchoolLogin extends AppCompatActivity {
                    signInBoss(email,password);
 
                 }else {
-
                     signInUser(email,password);
                 }
                 textOtp.setText("");
@@ -194,6 +193,9 @@ public class HighSchoolLogin extends AppCompatActivity {
                 textEdit = textOtp.getText().toString().trim();
                 if (textEdit.matches(otp)) {
 //                   signInBoss();
+                    textOtp.setText("");
+                    Login.setEnabled(false);
+                    fingerprint.setEnabled(false);
                     Intent intent = new Intent(HighSchoolLogin.this,PHSTeachers.class);
                     intent.putExtra("User","BOSS");
                     startActivity(intent);
@@ -204,9 +206,7 @@ public class HighSchoolLogin extends AppCompatActivity {
                     String email = Email.getEditText().getText().toString().trim();
                     signInUser(email,password);
                 }
-                textOtp.setText("");
-                Login.setEnabled(false);
-                fingerprint.setEnabled(false);
+
             }
         });
 
@@ -300,6 +300,9 @@ public class HighSchoolLogin extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
+                    textOtp.setText("");
+                    Login.setEnabled(true);
+                    fingerprint.setEnabled(true);
                    customProgressDialog.dismiss();
                     SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
                     editor.putString("email",email);
@@ -316,6 +319,7 @@ public class HighSchoolLogin extends AppCompatActivity {
                     String message = task.getException().getMessage();
                     Toast.makeText(HighSchoolLogin.this, message, Toast.LENGTH_SHORT).show();
                     Login.setEnabled(true);
+                    fingerprint.setEnabled(true);
                 }
             }
         });

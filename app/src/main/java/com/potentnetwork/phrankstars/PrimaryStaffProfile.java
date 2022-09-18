@@ -1,5 +1,6 @@
 package com.potentnetwork.phrankstars;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -27,6 +29,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.pdf.PdfDocument;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,6 +86,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.potentnetwork.phrankstars.Utility.NetworkChangeStateListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -98,7 +102,7 @@ import java.util.Date;
 public class PrimaryStaffProfile extends AppCompatActivity {
 
 
-    FloatingActionButton main_button, printButton, editButton, deleteButton;
+    FloatingActionButton main_button, printButton, editButton, deleteButton,update_single_primary_staff;
     boolean isOpen = false;
 
     TextView staffName12, staffPosition12, staffPhoneNumber12, createdDate12, currentDate12,
@@ -111,13 +115,8 @@ public class PrimaryStaffProfile extends AppCompatActivity {
     String currentDate,trackingDate,today;
     boolean isFinished = false;
 
-
-
     Bitmap bitmap;
     Bitmap bitmap1;
-
-
-
 
     String file_name = "Screenshot";
     File myPath;
@@ -159,17 +158,27 @@ public class PrimaryStaffProfile extends AppCompatActivity {
     int count = 1;
     int count2 = 1;
 
+    Date date, newDate;
+    SimpleDateFormat dt;
+    String string_date;
+
+    SimpleDateFormat f,f2;
+    Date d,d2;
+    long milliseconds,milliseconds2;
+
     WriteBatch batch;
     double saving,savingPerMth;
     TextView disAbledstaff;
     String boss;
-
+    MaterialAlertDialogBuilder builder,builder2;
+    NetworkChangeStateListener networkChangeStateListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_primary_staff_profile);
 
         CustomProgressDialog customProgressDialog = new CustomProgressDialog(this);
+        networkChangeStateListener = new NetworkChangeStateListener();
 
         pca1 = (PCA) getIntent().getSerializableExtra("primary_staff");
          boss = getIntent().getStringExtra("User");
@@ -186,6 +195,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
         printButton = findViewById(R.id.printButton);
         editButton = findViewById(R.id.editButton);
         deleteButton = findViewById(R.id.deleteButton);
+        update_single_primary_staff = findViewById(R.id.update_single_primary_staff);
         Animation openAnim = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         Animation closeAnim = AnimationUtils.loadAnimation(this, R.anim.fab_close);
         disAbledstaff = findViewById(R.id.disAbledstaff);
@@ -217,6 +227,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
             mainSalary12.setVisibility(View.INVISIBLE);
             payable12.setVisibility(View.INVISIBLE);
             delete_staff.setVisibility(View.INVISIBLE);
+
         }
         createdDate12.setText(pca1.getCreatedDate());
         staffName12.setText(pca1.getStaff_name1());
@@ -317,7 +328,327 @@ public class PrimaryStaffProfile extends AppCompatActivity {
             }
         });
 
+        update_single_primary_staff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder = new MaterialAlertDialogBuilder(v.getContext());
+                builder.setIcon(R.drawable.ic_update_staff_profiles);
+                builder.setTitle("UPDATE BASIC STAFF DETAILS?");
+                builder.setMessage("Staff profile (Savings/Loan) will be updated.");
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        updateSingleStaffProfile(pca1);
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
 
+
+    }
+
+    private void updateSingleStaffProfile(PCA pca1) {
+        date = new Date();
+        newDate = new Date(date.getTime());
+        dt = new SimpleDateFormat("EEE,dd MMM, yy");
+        currentDate = dt.format(newDate);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        Date tomorrow = calendar.getTime();
+
+        date = new Date();
+        newDate = new Date(date.getTime());
+        dt = new SimpleDateFormat("EEE,dd MMM, yy");
+        trackingDate = dt.format(newDate);
+
+        string_date = pca1.getTrackingDate();
+        f = new SimpleDateFormat("EEE,dd MMM, yy");
+        f2 = new SimpleDateFormat("EEE,dd MMM, yy");
+        try {
+            d = f.parse(string_date);
+            d2 = f2.parse(currentDate);
+            milliseconds = d.getTime();
+            milliseconds2 = d2.getTime();
+
+            long milliseconds3 = tomorrow.getTime();
+
+            diff = milliseconds2 - milliseconds;
+            seconds = diff / 1000;
+            minutes = seconds / 60;
+            hours = minutes / 60;
+            days = (hours / 24) + 1;
+            Log.d("days", "" + days);
+//                holder.dayCount.setText(days+" days");
+//                         staffLoanPaid12.setText(String.valueOf(days) );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+         if(!pca1.getTrackingDate().isEmpty() && days >= 25) {
+
+            if (!pca1.getTrackingDate().isEmpty() && days >= 25) {
+                isFinished =true;
+
+//                if (!staff.getTrackingDate().isEmpty()) {
+
+//        }else {
+//            string_date = String.valueOf(tomorrow.getTime());
+//        }
+
+
+
+//
+//                    if (!staff.getTrackingDate().isEmpty() && days >= 25
+//                            && !staff.getStaffLoan1().isEmpty()
+//                            || !staff.getStaffSavings1().isEmpty()
+//                    ) {
+
+                if (days >= 25 && !pca1.getStaffLoan1().isEmpty()) {
+                    // clear staff debt,add staff debt to payable,
+                    //update remaining loan
+                    // update total savings; total savings + savings per month
+                    // update total loan paid,add it to firebase
+                    // update payable+debt
+                    // update trackingDate to dateOfUpdate
+//                        progressBar.setVisibility(View.VISIBLE);
+//                        staffProfileTextView.setVisibility(View.VISIBLE);
+
+                    remainingLoanUpdate = Double.parseDouble(pca1.getRemainingLoan());
+                    StaffLoanPaid = Double.parseDouble(pca1.getLoanPaid());
+
+                    count++;
+                    isFinished = true;
+                    StaffLoanPaid += Double.parseDouble(pca1.getStaffLoanPayPerMonth1());
+                    remainingLoanUpdate -= Double.parseDouble(pca1.getStaffLoanPayPerMonth1());
+
+
+                    batch = db.batch();
+                    // Update the population of 'SF'
+                    ProgressDialog deleteDialog = new ProgressDialog(PrimaryStaffProfile.this);
+                    deleteDialog.setCancelable(false);
+                    deleteDialog.setIcon(R.mipmap.ic_launcher);
+                    deleteDialog.setCanceledOnTouchOutside(false);
+                    deleteDialog.setMessage("Updating "+pca1.getStaff_name1()+ " Loan Details\n Please wait...");
+                    deleteDialog.show();
+                    DocumentReference sfRef = db.collection("PCA").document(pca1.getId());
+
+
+//                        double payableUpdate = staff.getPayable();
+//                        if (!staff.getStaffDeduction1().equals("")) {
+//                            payableUpdate += Double.parseDouble(staff.getStaffDeduction1());
+//                        }
+//
+//                        batch.update(sfRef, "staffDeduction1", "");
+//                        batch.update(sfRef, "staffBonus1", "");
+
+//                        batch.update(sfRef, "payable", payableUpdate);
+                    batch.update(sfRef, "loanPaid", String.valueOf(StaffLoanPaid));
+                    batch.update(sfRef, "remainingLoan", String.valueOf(remainingLoanUpdate));
+                    batch.update(sfRef, "trackingDate", trackingDate);
+
+// Delete the city 'LA'
+//            DocumentReference laRef = db.collection("cities").document("LA");
+//            batch.delete(laRef);
+
+// Commit the batch
+                    batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // ...
+                            if (task.isSuccessful()) {
+                                deleteDialog.dismiss();
+//                                    progressBar.setVisibility(View.INVISIBLE);
+//                                    staffProfileTextView.setVisibility(View.INVISIBLE);
+                                    Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
+                                    i.putExtra("User",boss);
+                                    startActivity(i);
+                                    finish();
+                                Toast.makeText(PrimaryStaffProfile.this, pca1.getStaff_name1()+"\nloan Detail Updated", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    });
+
+
+                    if (remainingLoanUpdate < 0) {
+                        isFinished = true;
+                        double payableUpdate = pca1.getPayable();
+                        payableUpdate += Double.parseDouble(pca1.getStaffLoanPayPerMonth1());
+                        WriteBatch batch2;
+                        batch2 = db.batch();
+                        DocumentReference sfRef2 = db.collection("PCA").document(pca1.getId());
+                        batch2.update(sfRef2, "staffLoan1", "");
+                        batch2.update(sfRef2, "staffLoanPayPerMonth1", "");
+                        batch2.update(sfRef2, "remainingLoan", "");
+                        batch2.update(sfRef2, "payable", payableUpdate);
+                        batch2.update(sfRef2, "loanPaid", "");
+                        batch2.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // ...
+                                if (task.isSuccessful()) {
+//                                        progressBar.setVisibility(View.INVISIBLE);
+//                                        staffProfileTextView.setVisibility(View.INVISIBLE);
+
+                                    Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
+                                    i.putExtra("User",boss);
+                                    startActivity(i);
+                                    finish();
+
+                                    Toast.makeText(getApplicationContext(), pca1.getStaff_name1() + " Loan Cleared", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+//                    DocumentReference ClearStaffLoan = db.collection("PCA").document(pca1.getId());
+//                    ClearStaffLoan.update("staffLoan1","").addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void unused) {
+//                            customProgressDialog.dismiss();
+//                            Toast.makeText(PrimaryStaffProfile.this, "Staff Loan Cleared", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });2
+
+
+                        // if staffloanpaid is greater than staffloan, clear them from database
+                        //add every details subtracted when creating the staff account
+
+
+                        //  if deduction or bonus is not empty,clear them
+
+                        //clear staff loan and the loan pay per month from database
+                        // refresh the database
+                        // Update Admin that total loan has been paid by staff(using Toast)
+                        // update staff savings to database
+
+
+                    }
+
+                }
+
+
+                if (days >= 25 && !pca1.getStaffSavings1().isEmpty()) {
+                    //Increase staff savings using savings per month
+                    count2++;
+//                        progressBar.setVisibility(View.VISIBLE);
+//                        staffProfileTextView.setVisibility(View.VISIBLE);
+                    saving = Double.parseDouble(pca1.getStaffSavings1());
+                    savingPerMth = Double.parseDouble(pca1.getStaffSavingsPerMonth1());
+
+                    if (!pca1.getStaffSavings1().isEmpty()) {
+                        isFinished = true;
+                        trackingDate = currentDate;
+                        saving += savingPerMth;
+                        WriteBatch batch3;
+                        batch3 = db.batch();
+                        ProgressDialog deleteDialog = new ProgressDialog(PrimaryStaffProfile.this);
+                        deleteDialog.setCancelable(false);
+                        deleteDialog.setIcon(R.mipmap.ic_launcher);
+                        deleteDialog.setCanceledOnTouchOutside(false);
+                        deleteDialog.setMessage("Updating "+pca1.getStaff_name1()+ " Savings\n Please wait...");
+                        deleteDialog.show();
+                        DocumentReference sfRef3 = db.collection("PCA").document(pca1.getId());
+                        batch3.update(sfRef3, "staffSavings1", String.valueOf(saving));
+                        batch3.update(sfRef3, "trackingDate", trackingDate);
+                        batch3.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // ...
+                                if (task.isSuccessful()) {
+                                    deleteDialog.dismiss();
+                                    Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
+                                    i.putExtra("User",boss);
+                                    startActivity(i);
+                                    finish();
+//                                        progressBar.setVisibility(View.INVISIBLE);
+//                                        staffProfileTextView.setVisibility(View.INVISIBLE);
+                                    Toast.makeText(PrimaryStaffProfile.this, pca1.getStaff_name1()+" Savings Updated", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    } else {
+                        saving = Double.parseDouble("");
+                        savingPerMth = Double.parseDouble("");
+                    }
+
+                    if (days >= 25 && !pca1.getStaffDeduction1().isEmpty()) {
+                        isFinished = true;
+                        double payableUpdate = pca1.getPayable();
+                        if (!pca1.getStaffDeduction1().equals("")) {
+                            payableUpdate += Double.parseDouble(pca1.getStaffDeduction1());
+                        }
+                        WriteBatch batch4;
+                        batch4 = db.batch();
+                        DocumentReference sfRef2 = db.collection("PCA").document(pca1.getId());
+                        batch4.update(sfRef2, "payable", payableUpdate);
+                        batch4.update(sfRef2, "staffDeduction1", "");
+                        batch4.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // ...
+                                if (task.isSuccessful()) {
+//                                        progressBar.setVisibility(View.INVISIBLE);
+//                                        staffProfileTextView.setVisibility(View.INVISIBLE);
+                                    Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
+                                    i.putExtra("User",boss);
+                                    startActivity(i);
+                                    finish();
+                                    Toast.makeText(getApplicationContext(), pca1.getStaff_name1() + "\nLast Month Deductions Cleared", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                    if (days >= 25 && !pca1.getStaffBonus1().isEmpty()) {
+                        isFinished = true;
+                        double payableUpdate = pca1.getPayable();
+                        if (!pca1.getStaffBonus1().equals("")) {
+                            payableUpdate -= Double.parseDouble(pca1.getStaffBonus1());
+                        }
+                        WriteBatch batch5;
+                        batch5 = db.batch();
+                        DocumentReference sfRef2 = db.collection("PCA").document(pca1.getId());
+                        batch5.update(sfRef2, "payable", payableUpdate);
+                        batch5.update(sfRef2, "staffBonus1", "");
+                        batch5.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // ...
+                                if (task.isSuccessful()) {
+//                                        progressBar.setVisibility(View.INVISIBLE);
+//                                        staffProfileTextView.setVisibility(View.INVISIBLE);
+                                    Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
+                                    i.putExtra("User",boss);
+                                    startActivity(i);
+                                    finish();
+                                    Toast.makeText(getApplicationContext(), pca1.getStaff_name1() + "\nLast Month Bonus Cleared", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }
+
+                isFinished = false;
+            }
+        }else{
+             builder2 = new MaterialAlertDialogBuilder(PrimaryStaffProfile.this);
+             builder2.setIcon(R.drawable.ic_update_staff_profiles);
+//                builder2.setTitle("UPDATE STAFF DETAILS?");
+             builder2.setMessage(pca1.getStaff_name1()+" detail is UP-TO-DATE.");
+             builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int which) {
+                     dialog.dismiss();
+                 }
+             });
+             builder2.show();         }
     }
 
     private void disableStaff(PCA pca1) {
@@ -432,12 +763,20 @@ public class PrimaryStaffProfile extends AppCompatActivity {
             printButton.setVisibility(View.INVISIBLE);
             editButton.setVisibility(View.INVISIBLE);
             deleteButton.setVisibility(View.INVISIBLE);
+            if (boss.equals("BOSS")){
+                update_single_primary_staff.setVisibility(View.INVISIBLE);
+            }
+
 
             isOpen = false;
         } else {
             printButton.setVisibility(View.VISIBLE);
             editButton.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
+            if (boss.equals("BOSS")){
+                update_single_primary_staff.setVisibility(View.VISIBLE);
+            }
+
 ////
 //                    printButton.setAnimation(openAnim);
 //                    editButton.setAnimation(openAnim);
@@ -1042,6 +1381,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
+                Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -1072,6 +1412,19 @@ public class PrimaryStaffProfile extends AppCompatActivity {
         });
     }
 
+    @Keep
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeStateListener,filter);
+        super.onStart();
+    }
 
+    @Keep
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeStateListener);
+        super.onStop();
+    }
 
 }

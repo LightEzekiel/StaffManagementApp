@@ -180,10 +180,13 @@ public class LoginActivity extends AppCompatActivity {
                 textEdit = textOtp.getText().toString().trim();
                 if (textEdit.matches(otp)) {
 //                  signInBoss();
+                    textOtp.setText("");
+                    Login.setEnabled(false);
+                    fingerprint.setEnabled(false);
+
                     Intent intent = new Intent(LoginActivity.this,Teachers.class);
                     intent.putExtra("User","BOSS");
                     startActivity(intent);
-
 
                 }else {
                     String password = Password.getEditText().getText().toString().trim();
@@ -191,9 +194,7 @@ public class LoginActivity extends AppCompatActivity {
                     signInUser(email,password);
 
                 }
-                textOtp.setText("");
-                Login.setEnabled(false);
-                fingerprint.setEnabled(false);
+
 
             }
         });
@@ -315,6 +316,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
+                    textOtp.setText("");
+                    Login.setEnabled(true);
+                    fingerprint.setEnabled(true);
                     customProgressDialog.dismiss();
                     SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
                     editor.putString("email",email);
@@ -331,7 +335,8 @@ public class LoginActivity extends AppCompatActivity {
                     customProgressDialog.dismiss();
                    String message = task.getException().getMessage();
                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-
+                    Login.setEnabled(true);
+                    fingerprint.setEnabled(true);
                 }
 
             }

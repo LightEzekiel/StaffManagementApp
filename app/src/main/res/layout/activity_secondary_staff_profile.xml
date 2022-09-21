@@ -22,7 +22,7 @@
         android:id="@+id/PHSstaffImage12"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="14dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_person1"
@@ -45,7 +45,7 @@
         android:padding="0.5dp"
         android:text="Uncle Frank Okafor"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/PHSstaffImage12" />
@@ -55,12 +55,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
         android:fontFamily="sans-serif-smallcaps"
         android:padding="0.5dp"
         android:text="Sienna Driver"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PHSstaffName12" />
@@ -71,29 +70,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
         android:fontFamily="sans-serif-smallcaps"
         android:padding="0.5dp"
         android:text="09063441042"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PHSstaffPosition12" />
+    <TextView
+        android:id="@+id/PHSstaffYearlyResignationBalanceTxtV12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:padding="0.5dp"
+        android:text="Balance at tue,30 aug,22:"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PHSstaffPhoneNumber12" />
+    <TextView
+        android:id="@+id/PHSstaffResignationALlowanceTxt12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+
+        android:padding="0.5dp"
+        android:text="Resignation Allowance: "
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PHSstaffYearlyResignationBalanceTxtV12" />
 
     <ScrollView
         android:id="@+id/scrowView23"
         android:layout_width="414dp"
         android:layout_height="552dp"
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PHSstaffPhoneNumber12">
+        app:layout_constraintTop_toBottomOf="@+id/PHSstaffResignationALlowanceTxt12">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -111,13 +138,15 @@
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:clipToPadding="false"
                         android:gravity="center"
+
                         android:orientation="horizontal">
 
                         <androidx.cardview.widget.CardView
@@ -146,14 +175,14 @@
                                     android:layout_marginBottom="4dp"
                                     android:text="12,March,2022"
                                     android:textColor="@color/black"
-                                    android:textSize="12sp" />
+                                    android:textSize="10sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Basic Salary"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -230,7 +259,7 @@
                                     android:layout_marginBottom="4dp"
                                     android:text="09,April,2022"
                                     android:textColor="@color/black"
-                                    android:textSize="12sp"
+                                    android:textSize="10sp"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -238,7 +267,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Payable"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -432,7 +461,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="Pay Per Month"
                                     android:textColor="@color/black"
-                                    android:textSize="16sp"
+                                    android:textSize="14sp"
                                     android:textStyle="normal" />
 
                                 <TextView
@@ -516,7 +545,7 @@
                                     android:layout_marginTop="4dp"
                                     android:text="saving per Month"
                                     android:textColor="@color/black"
-                                    android:textSize="16sp"
+                                    android:textSize="14sp"
                                     android:textStyle="normal" />
 
                                 <TextView
@@ -565,7 +594,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:text="Frank Emeka Okafor"
-                                    android:textSize="18sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold" />
 
 
@@ -590,7 +619,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
                                     android:text="Fidelity"
-                                    android:textSize="20sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold" />
 
 
@@ -756,16 +785,16 @@
         android:id="@+id/PHSdisAbledstaff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:text="Staff \nDisabled"
         android:textAlignment="center"
         android:textColor="@color/red"
         android:textSize="12sp"
         android:textStyle="bold"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/scrowView23"
-        app:layout_constraintEnd_toStartOf="@+id/PHSstaffImage12"
-        app:layout_constraintStart_toEndOf="@+id/PHSstaffPhoneNumber12" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
 
     <ImageButton
         android:id="@+id/PHSdelete_staff"
@@ -777,6 +806,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_delete" />
+
+    <TextView
+        android:id="@+id/PHSstaffYearlyResignationBalance12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-5dp"
+        android:layout_marginEnd="14dp"
+        android:text=" #120,000,000"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/PHSstaffYearlyResignationBalanceTxtV12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/PHSstaffYearlyResignationBalanceTxtV12"
+        app:layout_constraintTop_toTopOf="@+id/PHSstaffYearlyResignationBalanceTxtV12" />
+
+    <TextView
+        android:id="@+id/PHSstaffResignationALlowance12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-5dp"
+        android:layout_marginEnd="14dp"
+        android:text="#135,000,000"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/PHSstaffResignationALlowanceTxt12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/PHSstaffResignationALlowanceTxt12"
+        app:layout_constraintTop_toTopOf="@+id/PHSstaffResignationALlowanceTxt12" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

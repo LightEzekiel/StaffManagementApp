@@ -23,14 +23,14 @@ public class PCA implements Serializable {
     String staff_name1, staff_position1, staff_phoneNumber1, staffSalary1, staffBonus1, staffDeduction1,
             staffSavings1, staffSavingsPerMonth1, staffLoan1, staffLoanPayPerMonth1, staff_bankAccountName1,
             staff_accountNumber1, staff_bankName1, staff_commentary1, createdDate,teacherImageUri,staff_salary_increment1,
-            id,trackingDate,remainingLoan,loanPaid;
+            id,trackingDate,remainingLoan,loanPaid,staffResignationAllowance1,staffYearAllowanceBalance,staffEndOfYearAllowanceTxtV;
     double payable;
 
     public PCA(String staff_name1, String staff_position1, String staff_phoneNumber1,
                String staffSalary1, String staffBonus1, String staffDeduction1, String staffSavings1,
                String staffSavingsPerMonth1, String staffLoan1, String staffLoanPayPerMonth1, String staff_bankAccountName1,
                String staff_accountNumber1, String staff_bankName1, String staff_commentary1, String createdDate,
-               String teacherImageUri, String staff_salary_increment1, String id, double payable,String trackingDate,String remainingLoan,String loanPaid) {
+               String teacherImageUri, String staff_salary_increment1, String id, double payable,String trackingDate,String remainingLoan,String loanPaid,String staffResignationAllowance1,String staffYearAllowanceBalance,String staffEndOfYearAllowanceTxtV) {
         this.staff_name1 = staff_name1;
         this.staff_position1 = staff_position1;
         this.staff_phoneNumber1 = staff_phoneNumber1;
@@ -53,6 +53,9 @@ public class PCA implements Serializable {
         this.trackingDate = trackingDate;
         this.remainingLoan = remainingLoan;
         this.loanPaid = loanPaid;
+        this.staffResignationAllowance1 = staffResignationAllowance1;
+        this.staffYearAllowanceBalance = staffYearAllowanceBalance;
+        this.staffEndOfYearAllowanceTxtV = staffEndOfYearAllowanceTxtV;
     }
 
     public static Comparator<PCA> staffName = new Comparator<PCA>() {
@@ -240,5 +243,29 @@ public class PCA implements Serializable {
 
     public void setLoanPaid(String loanPaid) {
         this.loanPaid = loanPaid;
+    }
+
+    public String getStaffResignationAllowance1() {
+        return staffResignationAllowance1;
+    }
+
+    public void setStaffResignationAllowance1(String staffResignationAllowance1) {
+        this.staffResignationAllowance1 = staffResignationAllowance1;
+    }
+
+    public String getStaffYearAllowanceBalance() {
+        return staffYearAllowanceBalance;
+    }
+
+    public void setStaffYearAllowanceBalance(String staffYearAllowanceBalance) {
+        this.staffYearAllowanceBalance = staffYearAllowanceBalance;
+    }
+
+    public String getStaffEndOfYearAllowanceTxtV() {
+        return staffEndOfYearAllowanceTxtV;
+    }
+
+    public void setStaffEndOfYearAllowanceTxtV(String staffEndOfYearAllowanceTxtV) {
+        this.staffEndOfYearAllowanceTxtV = staffEndOfYearAllowanceTxtV;
     }
 }

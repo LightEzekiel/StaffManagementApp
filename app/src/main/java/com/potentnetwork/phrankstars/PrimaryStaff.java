@@ -57,15 +57,15 @@ public class PrimaryStaff extends AppCompatActivity {
     TextInputLayout staffName,staffPosition,staffSalary,staffPhoneNumber,
     staffBonus,staffDeduction,staffTotalSavings,staffSavingsPerMonth,
     staffLoan,staffLoanPayPerMonth,staffBankAccountName,staffBankAccountNumber,
-    staffBankName,staffCommentary;
+    staffBankName,staffCommentary,staffAllowance;
 
     TextInputEditText staff_Salary1,staff_bonus1,staff_deduction1,staff_savings1,staff_savings_per_month1,
-            staff_loan1,staff_loan_pay_per_month1;
+            staff_loan1,staff_loan_pay_per_month1,staff_resignation_allowance1;
 
     String staff_name1,staff_position1,staff_phoneNumber1,staff_bankAccountName1,
             staff_AccountNumber1,staff_BankName1,staff_commentary1,staffSalary1,staffBonus1,
             staffDeduction1,staffSavings1,staffSavingsPerMonth1,staffLoan1,staffLoanPayPerMonth1,
-            staff_salary_increment1,trackingDate,remainingLoan,loanPaid;
+            staff_salary_increment1,trackingDate,remainingLoan,loanPaid,staffResignationAllowance1,staffYearAllowanceBalance,staffEndOfYearAllowanceTxtV;
 
     MenuItem createAccount;
 
@@ -100,6 +100,7 @@ public class PrimaryStaff extends AppCompatActivity {
         staffName = findViewById(R.id.staff_name);
         staffPosition = findViewById(R.id.staff_position);
         staffSalary = findViewById(R.id.staff_basic_salary);
+        staffAllowance = findViewById(R.id.staff_resignation_allowance); ///
         staffPhoneNumber = findViewById(R.id.staff_phone_number);
         staffBonus = findViewById(R.id.staff_bonus);
         staffDeduction = findViewById(R.id.staff_deduction);
@@ -119,6 +120,7 @@ public class PrimaryStaff extends AppCompatActivity {
         staff_savings_per_month1 = findViewById(R.id.staff_savings_per_month1);
         staff_loan1 = findViewById(R.id.staff_loan1);
         staff_loan_pay_per_month1 = findViewById(R.id.staff_loan_pay_per_month1);
+        staff_resignation_allowance1 = findViewById(R.id.staff_resignation_allowance1);
 
 
 
@@ -142,6 +144,8 @@ public class PrimaryStaff extends AppCompatActivity {
         staff_savings_per_month1.addTextChangedListener(onTextChangedListener4());
         staff_loan1.addTextChangedListener(onTextChangedListener5());
         staff_loan_pay_per_month1.addTextChangedListener(onTextChangedListener6());
+        staff_resignation_allowance1.addTextChangedListener(onTextChangedListener7());
+
 
     }
 
@@ -172,7 +176,9 @@ public class PrimaryStaff extends AppCompatActivity {
         staffSavingsPerMonth1 = staff_savings_per_month1.getText().toString().replaceAll(",", "");
         staffLoan1 = staff_loan1.getText().toString().replaceAll(",", "");
         staffLoanPayPerMonth1 = staff_loan_pay_per_month1.getText().toString().replaceAll(",", "");
+        staffResignationAllowance1 = staff_resignation_allowance1.getText().toString().replaceAll(",", "");
         staff_salary_increment1 ="";
+
 
 
 
@@ -193,6 +199,20 @@ public class PrimaryStaff extends AppCompatActivity {
             staffPosition.setError("Staff position required");
             staffPosition.requestFocus();
             return;
+        }
+        if (!staffResignationAllowance1.isEmpty()){
+            staffEndOfYearAllowanceTxtV = "Balance at 30 aug,22:";
+            double resignationAllowance = Double.parseDouble(staffResignationAllowance1);
+            staffYearAllowanceBalance = String.valueOf(resignationAllowance);
+            double totalPay = (Psalary / 100.0f) * 10;
+           double staffallw = totalPay + Double.parseDouble(staffResignationAllowance1);
+            staffResignationAllowance1 = String.valueOf(staffallw);
+
+
+        }else{
+            staffResignationAllowance1 = "";
+            staffYearAllowanceBalance = "";
+            staffEndOfYearAllowanceTxtV = "";
         }
 
         if(!staffLoan1.isEmpty() && !staffLoanPayPerMonth1.isEmpty() ) {
@@ -289,6 +309,8 @@ public class PrimaryStaff extends AppCompatActivity {
         }
 
 
+
+
         Date date = new Date();
         Date newDate = new Date(date.getTime());
         SimpleDateFormat dt = new SimpleDateFormat("EEE,dd MMM, yy");
@@ -307,7 +329,7 @@ public class PrimaryStaff extends AppCompatActivity {
         addToFireStore(staff_name1,staff_position1,staff_phoneNumber1,staffSalary1,staffBonus1,staffDeduction1,staffSavings1,staffSavingsPerMonth1,
                 staffLoan1,staffLoanPayPerMonth1,
                 staff_bankAccountName1,staff_AccountNumber1,
-                staff_BankName1,staff_commentary1,createdDate,teacherImageUri,Psalary,staff_salary_increment1,id,trackingDate,remainingLoan,loanPaid);
+                staff_BankName1,staff_commentary1,createdDate,teacherImageUri,Psalary,staff_salary_increment1,id,trackingDate,remainingLoan,loanPaid,staffResignationAllowance1,staffYearAllowanceBalance,staffEndOfYearAllowanceTxtV);
 
 
     }
@@ -316,7 +338,7 @@ public class PrimaryStaff extends AppCompatActivity {
                                 String staffDeduction1,
                                 String staffSavings1, String staffSavingsPerMonth1, String staffLoan1, String staffLoanPayPerMonth1, String staff_bankAccountName1,
                                 String staff_accountNumber1, String staff_bankName1, String staff_commentary1, String createdDate, String teacherImageUri,double payable,String staff_salary_increment1,String id,
-                                String trackingDate,String remainingLoan,String loanPaid) {
+                                String trackingDate,String remainingLoan,String loanPaid,String staffResignationAllowance1,String staffYearAllowanceBalance,String staffEndOfYearAllowanceTxtV) {
 
         ProgressDialog mProgressDiaglog = new ProgressDialog(PrimaryStaff.this);
         mProgressDiaglog.setCancelable(false);
@@ -329,7 +351,7 @@ public class PrimaryStaff extends AppCompatActivity {
 
         PCA pca = new PCA(staff_name1,staff_position1,staff_phoneNumber1,staffSalary1,staffBonus1,staffDeduction1,staffSavings1,staffSavingsPerMonth1,
                 staffLoan1,staffLoanPayPerMonth1,staff_bankAccountName1,staff_accountNumber1,staff_bankName1,staff_commentary1,
-                createdDate,teacherImageUri,staff_salary_increment1,id,payable,trackingDate,remainingLoan,loanPaid);
+                createdDate,teacherImageUri,staff_salary_increment1,id,payable,trackingDate,remainingLoan,loanPaid,staffResignationAllowance1,staffYearAllowanceBalance,staffEndOfYearAllowanceTxtV);
 
         dbPCAStaff.add(pca).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
@@ -340,7 +362,7 @@ public class PrimaryStaff extends AppCompatActivity {
                 mProgressDiaglog.dismiss();
                 Toast.makeText(PrimaryStaff.this, pca.getStaff_name1()+" added", Toast.LENGTH_SHORT).show();
             Intent in = new Intent(PrimaryStaff.this,Teachers.class);
-                in.putExtra("User",loginId);
+            in.putExtra("User",loginId);
             startActivity(in);
             finish();
             }
@@ -348,7 +370,6 @@ public class PrimaryStaff extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(PrimaryStaff.this, "Fail to add staff \n" + e, Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -768,6 +789,52 @@ public class PrimaryStaff extends AppCompatActivity {
 
 
                 staff_loan_pay_per_month1.addTextChangedListener(this);
+            }
+        };
+    }
+
+    private TextWatcher onTextChangedListener7() {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                staff_resignation_allowance1.removeTextChangedListener(this);
+
+                try {
+                    String originalString = s.toString();
+
+                    Long longval;
+                    if (originalString.contains(",")) {
+                        originalString = originalString.replaceAll(",", "");
+                    }
+                    longval = Long.parseLong(originalString);
+
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    formatter.applyPattern("#,###,###,###");
+                    String formattedString = formatter.format(longval);
+
+                    //setting text after format to EditText
+
+
+                    staff_resignation_allowance1.setText(formattedString);
+                    staff_resignation_allowance1.setSelection(staff_resignation_allowance1.getText().length());
+
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                }
+
+
+                staff_resignation_allowance1.addTextChangedListener(this);
             }
         };
     }

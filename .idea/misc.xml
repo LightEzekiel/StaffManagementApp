@@ -76,7 +76,9 @@
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/activity_phsteachers.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/activity_primary_dashboard.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/activity_primary_staff_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/activity_primary_staff.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/activity_primary_staff_profile.xml" value="0.264" />
+        <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/activity_secondary_staff.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/activity_secondary_staff_profile.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/activity_sign_up.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/activity_teacher_profile.xml" value="0.25416666666666665" />
@@ -85,11 +87,12 @@
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/check_network_dialog.xml" value="0.4" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/dialog_otp.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/login_tab_fragment.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/phs_print_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/phs_print_layout.xml" value="0.264" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/print_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/sign_up_fragment.xml" value="0.2" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/teachers_list_layout.xml" value="0.4" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/update_primary_staff_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/update_secondary_staff_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/layout/update_staff_profile_loader.xml" value="0.264" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/menu/teachers_account.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/POTENTIAL/AndroidStudioProjects/PhrankStars/app/src/main/res/menu/teachers_menu.xml" value="0.25416666666666665" />

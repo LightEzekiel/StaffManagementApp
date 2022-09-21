@@ -107,10 +107,12 @@ public class PrimaryStaffProfile extends AppCompatActivity {
 
     TextView staffName12, staffPosition12, staffPhoneNumber12, createdDate12, currentDate12,
             mainSalary12, payable12, salary_increment12, bonus12, debt12, loan12, loanPayPerMonth12, savings12,
-            savingsPerMonth12, bankAccountName12, bankAccountNumber12, bankName12, commentary12,staffLoanPaid12;
+            savingsPerMonth12, bankAccountName12, bankAccountNumber12, bankName12, commentary12,staffLoanPaid12,
+            staffYearlyResignationBalanceTxtV12,staffYearlyResignationBalance12,staffResignationALlowance12;
 
     TextView printed_date, staffName13, staffPosition13, staffPhoneNumber13, deduction13, bonus13, savings13,
-            savingsPerMonth13, loan13, toalLoanPaid13, loanPerMnth13, accountName13, accountNumber13, bank13, mainSalary13, payable13;
+            savingsPerMonth13, loan13, toalLoanPaid13, loanPerMnth13, accountName13, accountNumber13, bank13, mainSalary13, payable13,staff_allowance13
+            ;
     ImageView staffImage12, staffImage13;
     String currentDate,trackingDate,today;
     boolean isFinished = false;
@@ -142,11 +144,11 @@ public class PrimaryStaffProfile extends AppCompatActivity {
     String update_staff_name11, update_staff_position11, update_staff_basic_salary11, staff_basic_salary_increment11, update_staff_phone_number11, update_staff_bonus11,
             update_staff_deduction11, update_staff_savings11, update_staff_savings_per_month11, update_staff_loan11, update_staff_loan_pay_per_month11,
             update_staff_bank_account_name11, update_staff_bank_account_number11, update_staff_bank_name11, update_staff_commentary11, createdDate, id,trackingDate1,
-            remainingLoan,loanPaid,update_staff_payable11;
+            remainingLoan,loanPaid,staff_basic_allowances11,staffYearAllowanceBalance,staffEndOfYearAllowanceTxtV,update_staff_payable11;
 
     TextInputEditText update_staff_name, update_staff_position, update_staff_basic_salary, staff_basic_salary_increment, update_staff_phone_number,
             update_staff_bonus, update_staff_deduction, update_staff_savings, update_staff_savings_per_month, update_staff_loan, update_staff_loan_pay_per_month,
-            update_staff_bank_account_name, update_staff_bank_account_number, update_staff_bank_name, update_staff_commentary;
+            update_staff_bank_account_name, update_staff_bank_account_number, update_staff_bank_name, update_staff_commentary,staff_basic_allowances;
 
     TextInputLayout update_staff_name22, update_staff_position22, update_staff_basic_salary22, staff_basic_salary_increment22, update_staff_phone_number22,
             update_staff_bonus22, update_staff_deduction22, update_staff_savings22, update_staff_savings_per_month22, update_staff_loan22, update_staff_loan_pay_per_month22,
@@ -154,7 +156,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
 
     String printedDate;
     double remainingLoanUpdate,StaffLoanPaid,MainBasicSalary;
-    long diff,seconds,minutes,hours,days;
+    long diff,seconds,minutes,hours,days,days1;
     int count = 1;
     int count2 = 1;
 
@@ -222,6 +224,10 @@ public class PrimaryStaffProfile extends AppCompatActivity {
         staffLoanPaid12 = findViewById(R.id.staffLoanPaid12);
         delete_staff = findViewById(R.id.delete_staff);
 
+        staffYearlyResignationBalanceTxtV12 = findViewById(R.id.staffYearlyResignationBalanceTxtV12);
+        staffYearlyResignationBalance12 = findViewById(R.id.staffYearlyResignationBalance12);
+        staffResignationALlowance12 = findViewById(R.id.staffResignationALlowance12);
+
 
         if (boss.equals("ADMIN")){
             mainSalary12.setVisibility(View.INVISIBLE);
@@ -229,6 +235,18 @@ public class PrimaryStaffProfile extends AppCompatActivity {
             delete_staff.setVisibility(View.INVISIBLE);
 
         }
+        date = new Date();
+        newDate = new Date(date.getTime());
+        dt = new SimpleDateFormat("EEE,dd MMM, yy");
+        currentDate = dt.format(newDate);
+
+        updatestaffAllowance(pca1);
+
+//        staffYearlyResignationBalanceTxtV12.setText("Balance at "+currentDate+":"); /// Work with this for yearly staff allowance accumulation
+
+
+       staffYearlyResignationBalanceTxtV12.setText(pca1.getStaffEndOfYearAllowanceTxtV());
+
         createdDate12.setText(pca1.getCreatedDate());
         staffName12.setText(pca1.getStaff_name1());
         staffPosition12.setText(pca1.getStaff_position1());
@@ -245,11 +263,14 @@ public class PrimaryStaffProfile extends AppCompatActivity {
         loanPayPerMonth12.setText(pca1.getStaffLoanPayPerMonth1());
         savings12.setText(pca1.getStaffSavings1());
         savingsPerMonth12.setText(pca1.getStaffSavingsPerMonth1());
-        bankAccountName12.setText(pca1.getStaff_bankAccountName1());
-        bankName12.setText(pca1.getStaff_bankName1());
-        bankAccountNumber12.setText(pca1.getStaff_accountNumber1());
+//        bankAccountName12.setText(pca1.getStaff_bankAccountName1());
+//        bankName12.setText(pca1.getStaff_bankName1());
+//        bankAccountNumber12.setText(pca1.getStaff_accountNumber1());
         commentary12.setText(pca1.getStaff_commentary1());
         staffLoanPaid12.setText(pca1.getLoanPaid());
+
+        staffResignationALlowance12.setText("#"+pca1.getStaffResignationAllowance1());
+        staffYearlyResignationBalance12.setText("#"+pca1.getStaffYearAllowanceBalance());
 
         if (pca1.getTrackingDate().isEmpty()){
             disAbledstaff.setVisibility(View.VISIBLE);
@@ -339,6 +360,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         updateSingleStaffProfile(pca1);
+
                     }
                 });
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -392,9 +414,9 @@ public class PrimaryStaffProfile extends AppCompatActivity {
             e.printStackTrace();
         }
 
-         if(!pca1.getTrackingDate().isEmpty() && days >= 25) {
 
-            if (!pca1.getTrackingDate().isEmpty() && days >= 25) {
+
+            if (!pca1.getTrackingDate().isEmpty() && days >= 15) {
                 isFinished =true;
 
 //                if (!staff.getTrackingDate().isEmpty()) {
@@ -402,16 +424,14 @@ public class PrimaryStaffProfile extends AppCompatActivity {
 //        }else {
 //            string_date = String.valueOf(tomorrow.getTime());
 //        }
-
-
-
+                
 //
 //                    if (!staff.getTrackingDate().isEmpty() && days >= 25
 //                            && !staff.getStaffLoan1().isEmpty()
 //                            || !staff.getStaffSavings1().isEmpty()
 //                    ) {
 
-                if (days >= 25 && !pca1.getStaffLoan1().isEmpty()) {
+                if (days >= 15 && !pca1.getStaffLoan1().isEmpty()) {
                     // clear staff debt,add staff debt to payable,
                     //update remaining loan
                     // update total savings; total savings + savings per month
@@ -535,7 +555,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
                 }
 
 
-                if (days >= 25 && !pca1.getStaffSavings1().isEmpty()) {
+                if (days >= 15 && !pca1.getStaffSavings1().isEmpty()) {
                     //Increase staff savings using savings per month
                     count2++;
 //                        progressBar.setVisibility(View.VISIBLE);
@@ -578,65 +598,93 @@ public class PrimaryStaffProfile extends AppCompatActivity {
                         saving = Double.parseDouble("");
                         savingPerMth = Double.parseDouble("");
                     }
+                }
+                if (days >= 15 && !pca1.getStaffDeduction1().isEmpty()) {
+                    isFinished = true;
+                    double payableUpdate = pca1.getPayable();
+                    if (!pca1.getStaffDeduction1().equals("")) {
+                        payableUpdate += Double.parseDouble(pca1.getStaffDeduction1());
+                    }
+                    WriteBatch batch4;
+                    batch4 = db.batch();
+                    DocumentReference sfRef2 = db.collection("PCA").document(pca1.getId());
+                    batch4.update(sfRef2, "payable", payableUpdate);
+                    batch4.update(sfRef2, "staffDeduction1", "");
+                    batch4.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // ...
+                            if (task.isSuccessful()) {
+//                                        progressBar.setVisibility(View.INVISIBLE);
+//                                        staffProfileTextView.setVisibility(View.INVISIBLE);
+                                Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
+                                i.putExtra("User",boss);
+                                startActivity(i);
+                                finish();
+                                Toast.makeText(getApplicationContext(), pca1.getStaff_name1() + "\nLast Month Deductions Cleared", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
 
-                    if (days >= 25 && !pca1.getStaffDeduction1().isEmpty()) {
-                        isFinished = true;
-                        double payableUpdate = pca1.getPayable();
-                        if (!pca1.getStaffDeduction1().equals("")) {
-                            payableUpdate += Double.parseDouble(pca1.getStaffDeduction1());
-                        }
-                        WriteBatch batch4;
-                        batch4 = db.batch();
-                        DocumentReference sfRef2 = db.collection("PCA").document(pca1.getId());
-                        batch4.update(sfRef2, "payable", payableUpdate);
-                        batch4.update(sfRef2, "staffDeduction1", "");
-                        batch4.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // ...
-                                if (task.isSuccessful()) {
+                if (days >= 15 && !pca1.getStaffBonus1().isEmpty()) {
+                    isFinished = true;
+                    double payableUpdate = pca1.getPayable();
+                    if (!pca1.getStaffBonus1().equals("")) {
+                        payableUpdate -= Double.parseDouble(pca1.getStaffBonus1());
+                    }
+                    WriteBatch batch5;
+                    batch5 = db.batch();
+                    DocumentReference sfRef2 = db.collection("PCA").document(pca1.getId());
+                    batch5.update(sfRef2, "payable", payableUpdate);
+                    batch5.update(sfRef2, "staffBonus1", "");
+                    batch5.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // ...
+                            if (task.isSuccessful()) {
 //                                        progressBar.setVisibility(View.INVISIBLE);
 //                                        staffProfileTextView.setVisibility(View.INVISIBLE);
-                                    Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
-                                    i.putExtra("User",boss);
-                                    startActivity(i);
-                                    finish();
-                                    Toast.makeText(getApplicationContext(), pca1.getStaff_name1() + "\nLast Month Deductions Cleared", Toast.LENGTH_SHORT).show();
-                                }
+                                Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
+                                i.putExtra("User",boss);
+                                startActivity(i);
+                                finish();
+                                Toast.makeText(getApplicationContext(), pca1.getStaff_name1() + "\nLast Month Bonus Cleared", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
-                    if (days >= 25 && !pca1.getStaffBonus1().isEmpty()) {
-                        isFinished = true;
-                        double payableUpdate = pca1.getPayable();
-                        if (!pca1.getStaffBonus1().equals("")) {
-                            payableUpdate -= Double.parseDouble(pca1.getStaffBonus1());
                         }
-                        WriteBatch batch5;
-                        batch5 = db.batch();
-                        DocumentReference sfRef2 = db.collection("PCA").document(pca1.getId());
-                        batch5.update(sfRef2, "payable", payableUpdate);
-                        batch5.update(sfRef2, "staffBonus1", "");
-                        batch5.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // ...
-                                if (task.isSuccessful()) {
+                    });
+                }
+
+                if (days >= 15 && !pca1.getStaffResignationAllowance1().isEmpty()) { ///deduction
+                    isFinished = true;
+//                    double payableUpdate = pca1.getPayable();
+                    double totalPay = (Double.parseDouble(pca1.getStaffSalary1())/ 100.0f) * 10;
+                   double staffAllowanceIncrement = totalPay + Double.parseDouble(pca1.getStaffResignationAllowance1());
+//            staff_basic_allowances11 = String.valueOf(staffallw);
+
+                    WriteBatch batch6;
+                    batch6 = db.batch();
+                    DocumentReference sfRef2 = db.collection("PCA").document(pca1.getId());
+                    batch6.update(sfRef2, "StaffResignationAllowance1", staffAllowanceIncrement);
+                    batch6.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // ...
+                            if (task.isSuccessful()) {
 //                                        progressBar.setVisibility(View.INVISIBLE);
 //                                        staffProfileTextView.setVisibility(View.INVISIBLE);
-                                    Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
-                                    i.putExtra("User",boss);
-                                    startActivity(i);
-                                    finish();
-                                    Toast.makeText(getApplicationContext(), pca1.getStaff_name1() + "\nLast Month Bonus Cleared", Toast.LENGTH_SHORT).show();
-                                }
+                                Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
+                                i.putExtra("User",boss);
+                                startActivity(i);
+                                finish();
+                                Toast.makeText(getApplicationContext(), pca1.getStaff_name1() + "\nResignation Allowance Updated", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
+                        }
+                    });
                 }
 
                 isFinished = false;
-            }
+
         }else{
              builder2 = new MaterialAlertDialogBuilder(PrimaryStaffProfile.this);
              builder2.setIcon(R.drawable.ic_update_staff_profiles);
@@ -650,6 +698,77 @@ public class PrimaryStaffProfile extends AppCompatActivity {
              });
              builder2.show();         }
     }
+
+    private void updatestaffAllowance(PCA pca1) {
+        date = new Date();
+        newDate = new Date(date.getTime());
+        dt = new SimpleDateFormat("EEE,dd MMM, yy");
+        currentDate = dt.format(newDate);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        Date tomorrow = calendar.getTime();
+
+        date = new Date();
+        newDate = new Date(date.getTime());
+        dt = new SimpleDateFormat("EEE,dd MMM, yy");
+        trackingDate = dt.format(newDate);
+
+        string_date = pca1.getCreatedDate();
+        f = new SimpleDateFormat("EEE,dd MMM, yy");
+        f2 = new SimpleDateFormat("EEE,dd MMM, yy");
+        try {
+            d = f.parse(string_date);
+            d2 = f2.parse(currentDate);
+            milliseconds = d.getTime();
+            milliseconds2 = d2.getTime();
+
+            long milliseconds3 = tomorrow.getTime();
+
+            diff = milliseconds2 - milliseconds;
+            seconds = diff / 1000;
+            minutes = seconds / 60;
+            hours = minutes / 60;
+            days1 = (hours / 24) + 1;
+            Log.d("days", "" + days1);
+//                holder.dayCount.setText(days+" days");
+//                         staffLoanPaid12.setText(String.valueOf(days) );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (!pca1.getStaffResignationAllowance1().isEmpty() && days >= 365){
+//            staffYearlyResignationBalanceTxtV12.setText(String.valueOf(days1)); //"Balance at "+currentDate+":"
+
+            double staffYearAllowance = Double.parseDouble(pca1.getStaffResignationAllowance1());
+            String staffEndOfTheYearTxtV = "Balance at "+currentDate+":"; //pca1.getStaffEndOfYearAllowanceTxtV();
+//            double staffAllowanceIncrement = totalPay + Double.parseDouble(pca1.getStaffResignationAllowance1());
+//            staff_basic_allowances11 = String.valueOf(staffallw);
+
+            WriteBatch batch7;
+            batch7 = db.batch();
+            DocumentReference sfRef2 = db.collection("PCA").document(pca1.getId());
+            batch7.update(sfRef2, "staffYearAllowanceBalance", staffYearAllowance);
+            batch7.update(sfRef2, "staffEndOfYearAllowanceTxtV", staffEndOfTheYearTxtV);
+            batch7.update(sfRef2, "createdDate", currentDate);
+            batch7.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    // ...
+                    if (task.isSuccessful()) {
+//                                        progressBar.setVisibility(View.INVISIBLE);
+//                                        staffProfileTextView.setVisibility(View.INVISIBLE);
+//                        Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
+//                        i.putExtra("User",boss);
+//                        startActivity(i);
+//                        finish();
+//                        Toast.makeText(getApplicationContext(), pca1.getStaff_name1() + "\nResignation Allowance Updated", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+        }
+    }
+
 
     private void disableStaff(PCA pca1) {
 
@@ -678,6 +797,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
                                     Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
                                     i.putExtra("User",boss);
                                     startActivity(i);
+                                    finish();
 
                                     if (!teacherImageUri.isEmpty()) {
                                         StorageReference photoRef = FirebaseStorage.getInstance().getReference().child("teacher_image").child(
@@ -730,6 +850,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
                                     Intent i = new Intent(PrimaryStaffProfile.this, Teachers.class);
                                     i.putExtra("User",boss);
                                     startActivity(i);
+                                    finish();
                                     if (!teacherImageUri.isEmpty()) {
                                         StorageReference photoRef = FirebaseStorage.getInstance().getReference().child("teacher_image").child(
                                                 String.valueOf(Uri.parse(teacherImageUri)));
@@ -806,9 +927,10 @@ public class PrimaryStaffProfile extends AppCompatActivity {
         loan13 = dialog.findViewById(R.id.loan13);
         toalLoanPaid13 = dialog.findViewById(R.id.toalLoanPaid13);
         loanPerMnth13 = dialog.findViewById(R.id.loanPerMnth13);
-        accountName13 = dialog.findViewById(R.id.accountName13);
-        accountNumber13 = dialog.findViewById(R.id.accountNumber13);
-        bank13 = dialog.findViewById(R.id.bank13);
+        staff_allowance13 = dialog.findViewById(R.id.staff_allowance13);
+//        accountName13 = dialog.findViewById(R.id.accountName13);
+//        accountNumber13 = dialog.findViewById(R.id.accountNumber13);
+//        bank13 = dialog.findViewById(R.id.bank13);
         mainSalary13 = dialog.findViewById(R.id.mainSalary13);
         payable13 = dialog.findViewById(R.id.payable13);
         Glide.with(PrimaryStaffProfile.this).load(pca1.getTeacherImageUri()).centerCrop().into(staffImage13);
@@ -820,14 +942,15 @@ public class PrimaryStaffProfile extends AppCompatActivity {
         staffName13.setText(pca1.getStaff_name1());
         staffPosition13.setText(pca1.getStaff_position1());
         staffPhoneNumber13.setText(pca1.getStaff_phoneNumber1());
-        accountName13.setText(pca1.getStaff_bankAccountName1());
-        accountNumber13.setText(pca1.getStaff_accountNumber1());
-        bank13.setText(pca1.getStaff_bankName1());
+        staff_allowance13.setText("#"+pca1.getStaffResignationAllowance1());
+//        accountName13.setText(pca1.getStaff_bankAccountName1());
+//        accountNumber13.setText(pca1.getStaff_accountNumber1());
+//        bank13.setText(pca1.getStaff_bankName1());
         mainSalary13.setText("#" + pca1.getStaffSalary1());
         payable13.setText("#" + pca1.getPayable());
 
-        mainSalary13.setVisibility(View.INVISIBLE);
-        payable13.setVisibility(View.INVISIBLE);
+//        mainSalary13.setVisibility(View.INVISIBLE);
+//        payable13.setVisibility(View.INVISIBLE);
 
         if (pca1.getTrackingDate().isEmpty()){
             disabledTxtView.setVisibility(View.VISIBLE);
@@ -1032,6 +1155,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
         update_staff_commentary = dialog.findViewById(R.id.update_staff_commentary1);
         update_roundedimageView1 = dialog.findViewById(R.id.update_roundedimageView1);
         update_staff_image = dialog.findViewById(R.id.update_staff_image);
+        staff_basic_allowances = dialog.findViewById(R.id.staff_basic_allowances1);
 
         //TextInputLayout
         update_staff_basic_salary22 = dialog.findViewById(R.id.update_staff_basic_salary);
@@ -1074,6 +1198,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
         update_staff_bank_account_number.setText(pca1.getStaff_accountNumber1());
         update_staff_bank_name.setText(pca1.getStaff_bankName1());
         update_staff_commentary.setText(pca1.getStaff_commentary1());
+        staff_basic_allowances.setText(pca1.getStaffResignationAllowance1());
 
 
 //         update_staff_name22 = dialog.findViewById(R.id.update_staff_name); update_staff_position22 = dialog.findViewById(R.id.update_staff_position);
@@ -1117,12 +1242,14 @@ public class PrimaryStaffProfile extends AppCompatActivity {
         update_staff_bank_account_number11 = update_staff_bank_account_number.getText().toString().trim();
         update_staff_bank_name11 = update_staff_bank_name.getText().toString().trim();
         update_staff_commentary11 = update_staff_commentary.getText().toString().trim();
+        staff_basic_allowances11 = staff_basic_allowances.getText().toString().trim();
         id =pca1.getId();
         remainingLoan = pca1.getRemainingLoan();
         loanPaid = pca1.getLoanPaid();
         createdDate = pca1.getCreatedDate();
         trackingDate1 =pca1.getTrackingDate(); //Check tracking date
         remainingLoan = pca1.getRemainingLoan();
+        staffEndOfYearAllowanceTxtV = pca1.getStaffEndOfYearAllowanceTxtV();
 
 
 
@@ -1147,6 +1274,32 @@ public class PrimaryStaffProfile extends AppCompatActivity {
             staff_basic_salary_increment11 = "";
         }
 
+
+
+
+        if (!staff_basic_allowances11.isEmpty() && staff_basic_allowances11.equals(pca1.getStaffResignationAllowance1())){
+            staff_basic_allowances11 = pca1.getStaffResignationAllowance1();
+            staffYearAllowanceBalance = pca1.getStaffYearAllowanceBalance();
+            staffEndOfYearAllowanceTxtV = pca1.getStaffEndOfYearAllowanceTxtV();
+        }else if (!staff_basic_allowances11.isEmpty() && !staff_basic_allowances11.equals(pca1.getStaffResignationAllowance1())){
+            staffYearAllowanceBalance = staff_basic_allowances.getText().toString().trim();
+            staffEndOfYearAllowanceTxtV = "Balance at 30 aug,22:";
+            //double resignationAllowance = Double.parseDouble(staff_basic_allowances11);
+            double totalPay = (Psalary / 100.0f) * 10;
+            double staffallw = totalPay + Double.parseDouble(staff_basic_allowances11);
+            staff_basic_allowances11 = String.valueOf(staffallw);
+
+//            staff_basic_allowances11 = staff_basic_allowances.getText().toString().trim();
+        }
+//        else if (staff_basic_allowances11.isEmpty() && !staff_basic_allowances11.equals(pca1.getStaffResignationAllowance1())){
+//            double totalPay = (Psalary / 100.0f) * 10;
+//            double staffallw = totalPay + Double.parseDouble(staff_basic_allowances11);
+//            staff_basic_allowances11 = String.valueOf(staffallw);
+//        }
+        else {
+            staff_basic_allowances11 = "";
+            staffYearAllowanceBalance = "";
+        }
 
         Psalary = Psalary - (Psalary / 100.0f) * 10;
 
@@ -1306,7 +1459,7 @@ public class PrimaryStaffProfile extends AppCompatActivity {
         updateStaffProfile(pca1, update_staff_name11, update_staff_position11, update_staff_phone_number11, update_staff_basic_salary11, update_staff_bonus11,
                 update_staff_deduction11, update_staff_savings11, update_staff_savings_per_month11, update_staff_loan11, update_staff_loan_pay_per_month11,
                 update_staff_bank_account_name11, update_staff_bank_account_number11, update_staff_bank_name11, update_staff_commentary11, createdDate, teacherImageUri,
-                staff_basic_salary_increment11, id, Psalary,trackingDate1,remainingLoan,loanPaid);
+                staff_basic_salary_increment11, id, Psalary,trackingDate1,remainingLoan,loanPaid,staff_basic_allowances11,staffYearAllowanceBalance,staffEndOfYearAllowanceTxtV);
     }
 
     private void updateStaffProfile(PCA pca, String update_staff_name11, String update_staff_position11, String update_staff_phone_number11, String update_staff_basic_salary11,
@@ -1314,11 +1467,12 @@ public class PrimaryStaffProfile extends AppCompatActivity {
                                     String update_staff_savings_per_month11, String update_staff_loan11, String update_staff_loan_pay_per_month11,
                                     String update_staff_bank_account_name11, String update_staff_bank_account_number11, String update_staff_bank_name11,
                                     String update_staff_commentary11, String createdDate, String teacherImageUri,
-                                    String staff_basic_salary_increment11, String id, double psalary,String trackingDate,String remainingLoan,String loanPaid) {
+                                    String staff_basic_salary_increment11, String id, double psalary,String trackingDate,String remainingLoan,
+                                    String loanPaid,String staff_basic_allowances11,String staffYearAllowanceBalance,String staffEndOfYearAllowanceTxtV) {
         PCA updateCourse = new PCA(update_staff_name11, update_staff_position11, update_staff_phone_number11, update_staff_basic_salary11, update_staff_bonus11,
                 update_staff_deduction11, update_staff_savings11, update_staff_savings_per_month11, update_staff_loan11, update_staff_loan_pay_per_month11,
                 update_staff_bank_account_name11, update_staff_bank_account_number11, update_staff_bank_name11, update_staff_commentary11, createdDate, teacherImageUri,
-                staff_basic_salary_increment11, id, psalary,trackingDate,remainingLoan,loanPaid);
+                staff_basic_salary_increment11, id, psalary,trackingDate,remainingLoan,loanPaid,staff_basic_allowances11,staffYearAllowanceBalance,staffEndOfYearAllowanceTxtV);
 
 
         ProgressDialog mProgressDiaglog = new ProgressDialog(PrimaryStaffProfile.this);

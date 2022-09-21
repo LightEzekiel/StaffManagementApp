@@ -218,10 +218,39 @@
                     app:layout_constraintEnd_toEndOf="parent"
 
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/phs_update_staff_basic_salary">
+                    app:layout_constraintTop_toBottomOf="@id/phs_staff_basic_resignation_allowance">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/phs_staff_basic_salary_increment1"
+
+                        android:layout_width="match_parent"
+
+                        android:layout_height="match_parent"
+
+                        android:inputType="numberDecimal"
+
+                        android:textColor="@color/black">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/phs_staff_basic_resignation_allowance"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:hint="Staff Resignation Allowance"
+                    android:textColorHint="@color/black"
+                    app:boxStrokeColor="@color/black"
+                    app:hintTextColor="@color/skyblue"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/phs_update_staff_basic_salary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/phs_staff_basic_resignation_allowance1"
 
                         android:layout_width="match_parent"
 
@@ -314,7 +343,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:hint="Deductions"
+                android:hint="Outstanding Debt"
                 android:textColorHint="@color/black"
                 app:boxStrokeColor="@color/black"
                 app:hintTextColor="@color/skyblue"
